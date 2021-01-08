@@ -1,13 +1,21 @@
 <?php
+// PROFILE MODULE CONTAINS STUDENT VIEW AND ADMIN VIEW PROFILE DASHBOARD
 
 session_start();
 
 require 'config.php';
-require 'middleware.php';
 
 
 if (isset($_SESSION['studentno'], $_SESSION['password'])) {
 
+   
+
+        if (isset($_POST['logout'])) {
+            session_destroy();
+            header("location:index.php");
+            exit;
+        }
+    
 
 ?>
 
@@ -27,7 +35,16 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
             <div style="margin-top:0px;width:100%;">
                 <?php if (isset($_SESSION['studentno'], $_SESSION['password'])) { ?>
 
-                    <p>User View (logged in) <a href="logout.php"><button style="font-size:25px;">Logout</button></a></p>
+                <div style="margin-top:0px;width:100%;">
+                    <form method="POST">
+                        <?php if (isset($_SESSION['studentno'], $_SESSION['password'])) { ?>
+                         <!-- <input type="submit" name="logout" class="btn btn-primary" value="Log Out"> -->
+                        <p>User View (logged in)<button style="font-size:25px;" type="submit" name="logout">LogOut</button></p>
+                        <?php } ?>
+                    </form>
+                </div>
+
+
 
 
                 <?php } else { ?>
@@ -68,7 +85,7 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
                                 // listeleme
                                 try {
                                     $no = $_SESSION['studentno'];
-                                    $pdo = new PDO("pgsql:host=localhost;dbname=STUDENT", "postgres", "$dbpassword");
+                                    $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "$user", "$dbpassword");
                                     $sql = "SELECT * FROM enrollment WHERE studentno='$no'";
                                     foreach ($pdo->query($sql) as $row) {
                                 ?>
@@ -107,7 +124,7 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
                             <?php
                             // listeleme
                             try {
-                                $pdo = new PDO("pgsql:host=localhost;dbname=STUDENT", "postgres", "$dbpassword");
+                                $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "$user", "$dbpassword");
                                 $sql = "SELECT * FROM course";
                                 foreach ($pdo->query($sql) as $row) {
                             ?>
@@ -127,7 +144,7 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
                             }
                             ?>
                         </table>
-                        <a href="adddropcrud.php"><button style="font-size:25px;">Add - Drop</button></a>
+                        <a href="coursecrud.php"><button style="font-size:25px;">Add - Drop</button></a>
                     </div>
 
                 </div>
@@ -162,7 +179,7 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
                         <?php
                         // listeleme
                         try {
-                            $pdo = new PDO("pgsql:host=localhost;dbname=STUDENT", "postgres", "$dbpassword");
+                            $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "$user", "$dbpassword");
                             $sql = "SELECT * FROM course";
                             foreach ($pdo->query($sql) as $row) {
                         ?>
