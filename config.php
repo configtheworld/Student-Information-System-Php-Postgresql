@@ -5,9 +5,9 @@
 
 $host = "localhost";
 $port = "5432";
-$dbname = "STUDENT";
+$dbname = "studenterkin";// insert here your own dbname
 $user = "postgres";
-$dbpassword = "berk1336"; 
+$dbpassword = "dogukan90"; // insert here your own dbpassword
 $connection_string = "host={$host} port={$port} dbname={$dbname} user={$user} password={$dbpassword}";
 $conn = pg_connect($connection_string);
 

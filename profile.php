@@ -35,6 +35,9 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
             <div style="margin-top:0px;width:100%;">
                 <?php if (isset($_SESSION['studentno'], $_SESSION['password'])) { ?>
 
+
+              <p>User View (logged in) </p>
+         
                 <div style="margin-top:0px;width:100%;">
                     <form method="POST">
                         <?php if (isset($_SESSION['studentno'], $_SESSION['password'])) { ?>
@@ -85,7 +88,9 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
                                 // listeleme
                                 try {
                                     $no = $_SESSION['studentno'];
+
                                     $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "$user", "$dbpassword");
+
                                     $sql = "SELECT * FROM enrollment WHERE studentno='$no'";
                                     foreach ($pdo->query($sql) as $row) {
                                 ?>
@@ -124,7 +129,9 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
                             <?php
                             // listeleme
                             try {
+
                                 $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "$user", "$dbpassword");
+
                                 $sql = "SELECT * FROM course";
                                 foreach ($pdo->query($sql) as $row) {
                             ?>
@@ -179,7 +186,9 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
                         <?php
                         // listeleme
                         try {
+
                             $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "$user", "$dbpassword");
+
                             $sql = "SELECT * FROM course";
                             foreach ($pdo->query($sql) as $row) {
                         ?>
@@ -222,8 +231,11 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
 
 
 } else {
-    header("location:index.php");
-    exit;
+    ?>
+    <p>Guest View (not logged in) click Back button to go back to login page</p>
+    <a href="index.php"  ><button>Back</button</a>
+    
+    <?php
 }
 unset($_SESSION['prompt']);
 pg_close($conn);

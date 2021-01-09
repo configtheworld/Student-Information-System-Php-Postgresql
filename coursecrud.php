@@ -10,6 +10,8 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
 
  if (isset($_SESSION['studentno']) && $_SESSION['user_type'] == "admin") { 
 
+ if (isset($_SESSION['studentno']) && $_SESSION['user_type'] == "admin") { 
+
     // session check
     if (isset($_SESSION['studentno']) && $_SESSION['user_type'] == "student") {
         header("location:index.php");
@@ -26,9 +28,13 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
 
 
         try {
+
             $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "$user", "$dbpassword");
+
             $sql_q1 = "INSERT INTO course (coursename, lecture, department) VALUES ('$coursename','$lecture','$department')";
-            pg_query($conn, $sql_q1);
+            // pg_query($conn, $sql_q1);
+            pg_prepare($conn, "my_query", $sql_q1);
+            pg_execute($conn, "my_query", array());
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
@@ -43,9 +49,13 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
         $department = $_POST['department'];
 
         try {
+
             $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "$user", "$dbpassword");
+
             $sql_q2 = "DELETE FROM course WHERE coursename='$coursename' AND lecture='$lecture' AND department='$department' ";
-            pg_query($conn, $sql_q2);
+            // pg_query($conn, $sql_q2);
+            pg_prepare($conn, "my_query", $sql_q2);
+            pg_execute($conn, "my_query", array());
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
@@ -54,7 +64,9 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
 
     // listeleme
     try {
+
         $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "$user", "$dbpassword");
+
         $sql = "SELECT * FROM course";
         foreach ($pdo->query($sql) as $row) {
             
@@ -138,9 +150,13 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
 
 
         try {
-            $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "$user", "$dbpassword");
+
+            $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "postgres", "$dbpassword");
             $sql_q1 = "INSERT INTO enrollment (coursename, studentno) VALUES ('$coursename','$studentno')";
-            pg_query($conn, $sql_q1);
+            // pg_query($conn, $sql_q1);
+            pg_prepare($conn, "my_query", $sql_q1);
+            pg_execute($conn, "my_query", array());
+
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
@@ -154,9 +170,13 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
         $studentno = $_POST['studentno'];
 
         try {
-            $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "$user", "$dbpassword");
+
+            $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "postgres", "$dbpassword");
             $sql_q2 = "DELETE FROM enrollment WHERE coursename='$coursename' AND studentno='$studentno' ";
-            pg_query($conn, $sql_q2);
+            // pg_query($conn, $sql_q2);
+            pg_prepare($conn, "my_query", $sql_q2);
+            pg_execute($conn, "my_query", array());
+
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
@@ -166,8 +186,10 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
 
     // listeleme
     try {
+
         $pdo = new PDO("pgsql:host=localhost;dbname=$dbname", "$user", "$dbpassword");
         $sql = "SELECT * FROM course";
+
         foreach ($pdo->query($sql) as $row) {
             $enrolled = False;
 
@@ -175,7 +197,9 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
             try {
                 $no = $_SESSION['studentno'];
                 $coursename = $row['coursename'];
+
                 $pdo1 = new PDO("pgsql:host=localhost;dbname=$dbname", "$user", "$dbpassword");
+
                 $sql1 = "SELECT * FROM enrollment WHERE studentno='$no' AND coursename='$coursename' ";
                 foreach ($pdo1->query($sql1) as $row1) {
 
@@ -253,7 +277,9 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
 <?php
 
     }// student
-    // artık ne admin ne student crud yapabilir login yap ozaman
+
+    // neither student nor admin can do crud operations login again
+
 } else {
     header("location:index.php");
     exit;
