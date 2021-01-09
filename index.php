@@ -1,5 +1,7 @@
 <?php
 // İNDEX FILE CONTAINS LOGIN AND REGISTRATION PROPERTIES
+
+
 session_start();
 require "config.php";
 
@@ -25,9 +27,11 @@ if (!isset($_SESSION['studentno'], $_SESSION['password'])) {
         $user_type = trim_modified($_POST['user_type']);
 
         $sql = "SELECT * FROM public.student WHERE studentno='$studentno' AND password='$password' AND user_type='$user_type' ";
+
         // $data = pg_query($conn, $sql);
         $user = pg_prepare($conn, "my_query", $sql);
         $data = pg_execute($conn, "my_query", array());
+
         $login_check = pg_num_rows($data);
         if ($login_check > 0) {
 
@@ -51,6 +55,8 @@ if (!isset($_SESSION['studentno'], $_SESSION['password'])) {
 
 
 
+
+
         $studentNo = trim_modified($_POST['studentNo']);
         $fullname = trim_modified($_POST['fullname']);
         $user_type = trim_modified($_POST['user_type']);
@@ -64,6 +70,7 @@ if (!isset($_SESSION['studentno'], $_SESSION['password'])) {
 
         $sql = "INSERT INTO public.student(fullname, department, year, password,studentno, user_type)VALUES" . $query;
 
+
         // $ret = pg_query($conn, $sql);
         $user = pg_prepare($conn, "my_query", $sql);
         $ret = pg_execute($conn, "my_query", array());
@@ -74,6 +81,7 @@ if (!isset($_SESSION['studentno'], $_SESSION['password'])) {
             header("location:index.php");
             exit;
         } else {
+
 
             echo "Something Went Wrong";
         }
@@ -96,8 +104,10 @@ if (!isset($_SESSION['studentno'], $_SESSION['password'])) {
         </div>
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
             <div>
+
                 <label>User Number</label>
                 <input type="number" name="studentno" placeholder="student number" required>
+
             </div>
             <div>
                 <label for="usertype">You are a:</label>
@@ -133,15 +143,17 @@ if (!isset($_SESSION['studentno'], $_SESSION['password'])) {
 
         <div style="font-size: 21px;text-align:center;">
             <h1>Registration Form</h1>
-            <p>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-                <button name="click1" style="font-size:15px;">Close registration form</button>
-            </form>
-            </p>
+
+            <p> 
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+            <button name="click1" style="font-size:15px;">Close registration form</button>
+    </form>
+        </p>
 
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
                 <div>
-                    <label>User Number</label>
+                    <label>User Number(Copy it, do not forget)</label>
+
                     <input type="text" name="studentNo" value='<?= $randomNum ?>' readonly>
                 </div>
                 <div>
