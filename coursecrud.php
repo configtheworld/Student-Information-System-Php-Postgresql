@@ -10,8 +10,6 @@ if (isset($_SESSION['studentno'], $_SESSION['password'])) {
 
  if (isset($_SESSION['studentno']) && $_SESSION['user_type'] == "admin") { 
 
- if (isset($_SESSION['studentno']) && $_SESSION['user_type'] == "admin") { 
-
     // session check
     if (isset($_SESSION['studentno']) && $_SESSION['user_type'] == "student") {
         header("location:index.php");
